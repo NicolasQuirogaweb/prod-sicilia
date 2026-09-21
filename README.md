@@ -10,17 +10,22 @@ La especificación completa del producto y las reglas de negocio están en [`CLA
 
 ## Stack
 
-Next.js 15 (App Router, TypeScript strict) · Payload CMS (embebido) · PostgreSQL · Cloudflare R2 · Zustand + Howler.js · React Hook Form + Zod · Tailwind CSS + shadcn/ui · Mercado Pago (Checkout Pro) · Vercel.
+Next.js 16 (App Router, TypeScript strict) · Payload CMS 3 (embebido) · PostgreSQL · Cloudflare R2 · Zustand + Howler.js · React Hook Form + Zod · Tailwind CSS + shadcn/ui · Mercado Pago (Checkout Pro) · Vercel.
 
-Ver `CLAUDE.md` sección 2 para el detalle y la justificación de cada elección.
+Ver `CLAUDE.md` sección 2 para el detalle de cada elección, y [`DECISIONS.md`](./DECISIONS.md) para por qué el proyecto corre en Next.js 16 en vez de Next.js 15 (la sección 2 fija Next 15, pero Payload solo soporta un parche de Next 15 con una vulnerabilidad crítica sin fix disponible en esa línea).
 
 ## Estado del proyecto
 
-El scaffold de código (Next.js + Payload, Fase 0 del plan de fases en `CLAUDE.md` sección 14) todavía no arrancó. Este repo por ahora solo tiene la especificación, el pipeline de CI y la estructura de control de versiones lista.
+**Fase 0 completa**: scaffold de Next.js + Payload CMS embebido, collections mínimas `Users` (auth) y `Media` (backed por R2), estructura de carpetas `(site)`/`(payload)`. Falta conectar una base de datos y un bucket R2 reales (ver más abajo) y arrancar la Fase 1 (modelo de datos de negocio: `Beat`, `License`, `Order`).
 
 ## Cómo levantar el proyecto
 
-Se documenta acá una vez completada la Fase 0. Por ahora, copiar `.env.example` a `.env.local` y completar las variables reales cuando el scaffold exista.
+1. `npm install`
+2. Copiar `.env.example` a `.env.local` (o completar el que ya existe) con:
+   - `DATABASE_URL` de un proyecto en [Neon](https://neon.tech)
+   - `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`, `R2_ENDPOINT` de un bucket de Cloudflare R2, y `R2_PUBLIC_URL` (subdominio `R2.dev` o dominio custom habilitado en el bucket — R2 es privado por default, ver `DECISIONS.md`)
+   - `PAYLOAD_SECRET` (cualquier string aleatorio largo)
+3. `npm run dev` y abrir `http://localhost:3000/admin` para crear el primer usuario.
 
 ## CI/CD
 
